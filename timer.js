@@ -5,6 +5,8 @@ chrome.runtime.onMessage.addListener(gotMessage);
 
 var isColored = false;
 
+
+
 function gotMessage(request,sender,sendResponse) {
 
 
@@ -12,7 +14,7 @@ function gotMessage(request,sender,sendResponse) {
 
 
     if(request.txt==="changeColor"){
-        let divs = document.getElementsByTagName('div');
+        let divs = document.getElementsByTagName('p');
 
         if (isColored ===false) {
 
