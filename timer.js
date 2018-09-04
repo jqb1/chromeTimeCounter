@@ -18,14 +18,14 @@ function gotMessage(request,sender,sendResponse) {
 
         if (isColored ===false) {
 
-            for (el of divs) {
-                el.style['background-color'] = '#4683ea'
+            for (div of divs) {
+                div.style['background-color'] = '#4683ea'
             }
             isColored = true;
         }
         else{
-            for (el of divs) {
-                el.style['background-color'] = '#fff'
+            for (div of divs) {
+                div.style['background-color'] = '#fff'
             }
             isColored = false
         }
