@@ -19,7 +19,9 @@
     "scripts":["background.js"]
   },
   "permissions": [
-    "tabs"
+    "tabs",
+    "cookies",
+    "<all_urls>"
   ]
 
 

@@ -40,7 +40,7 @@ function buttonClicked(tab) {
 }
 
 function tabChanged() {
-    let elapsedTime=0;
+    let elapsedTime = 0;
     //if not first opened page
     if (start !== 0) {
 
@@ -63,7 +63,7 @@ function tabChanged() {
             currentPage = pageName;
 
         // map previous website name with time spent
-        timeMapper(currentPage,elapsedTime);
+        timeMapper(currentPage, elapsedTime);
         // remember current page name
         currentPage = pageName;
         console.log(pageName);
@@ -96,7 +96,7 @@ function truncateUrl(url) {
 }
 
 
-function timeMapper(websiteName,elapsedTime) {
+function timeMapper(websiteName, elapsedTime) {
     //check if new website today
     if (websiteMap.has(websiteName) === false) {
 
@@ -105,7 +105,15 @@ function timeMapper(websiteName,elapsedTime) {
     else {
         let timeYet = websiteMap.get(websiteName);
         let timeSum = timeYet + elapsedTime;
-        websiteMap.set(websiteName,timeSum);
+        websiteMap.set(websiteName, timeSum);
+
+        let cookie = {
+            'name':'kukik',
+            'url': 'https://'+websiteName,
+            'value': timeSum.toString()
+        };
+
+        chrome.cookies.set(cookie);
     }
     //populate names with times
     console.log(websiteMap);
