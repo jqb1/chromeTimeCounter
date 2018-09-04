@@ -11,11 +11,15 @@ let params = {
     'lastFocusedWindow': true
 };
 
-let websiteMap=new Map();
+let websiteMap = new Map();
 
 // time variables
 let start = 0;
 let end = 0;
+
+//variable used to remember previous tab when changed
+let currentPage;
+
 function printPage() {
 
 
@@ -36,12 +40,15 @@ function buttonClicked(tab) {
 }
 
 function tabChanged() {
-    if(start !==0)
-        end = window.performance.now();
+    let elapsedTime=0;
+    //if not first opened page
+    if (start !== 0) {
 
-    let elapsed = end - start;
-    console.log(elapsed);
-    start=window.performance.now();
+        end = window.performance.now();
+        elapsedTime = end - start;
+        console.log(elapsedTime);
+    }
+    start = window.performance.now();
 
 
     //when tab is changed, get tab url, start counting time
@@ -49,9 +56,18 @@ function tabChanged() {
         //get url
         let url = tabs[0].url;
 
-        let websiteName = truncateUrl(url);
-        console.log(websiteName);
-        timeCounter(websiteName);
+        let pageName = truncateUrl(url);
+
+        //if first page change
+        if (!currentPage)
+            currentPage = pageName;
+
+        // map previous website name with time spent
+        timeMapper(currentPage,elapsedTime);
+        // remember current page name
+        currentPage = pageName;
+        console.log(pageName);
+
     });
 
 }
@@ -80,20 +96,22 @@ function truncateUrl(url) {
 }
 
 
-function timeCounter(websiteName){
+function timeMapper(websiteName,elapsedTime) {
     //check if new website today
-    if(websiteMap.has(websiteName)===false){
+    if (websiteMap.has(websiteName) === false) {
 
-        websiteMap.set(websiteName,0);
+        websiteMap.set(websiteName, elapsedTime);
     }
-    else{
-
+    else {
+        let timeYet = websiteMap.get(websiteName);
+        let timeSum = timeYet + elapsedTime;
+        websiteMap.set(websiteName,timeSum);
     }
     //populate names with times
     console.log(websiteMap);
 
 }
 
-function countTime(){
+function countTime() {
 
 }
