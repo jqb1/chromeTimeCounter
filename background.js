@@ -97,24 +97,27 @@ function truncateUrl(url) {
 
 
 function timeMapper(websiteName, elapsedTime) {
+    let timeYet,timeSum;
     //check if new website today
     if (websiteMap.has(websiteName) === false) {
 
         websiteMap.set(websiteName, elapsedTime);
+        timeSum=elapsedTime;
     }
     else {
-        let timeYet = websiteMap.get(websiteName);
-        let timeSum = timeYet + elapsedTime;
+        timeYet = websiteMap.get(websiteName);
+        timeSum = timeYet + elapsedTime;
         websiteMap.set(websiteName, timeSum);
-
-        let cookie = {
-            'name':'kukik',
-            'url': 'https://'+websiteName,
-            'value': timeSum.toString()
-        };
-
-        chrome.cookies.set(cookie);
     }
+    let cookie = {
+        'name': 'kukik',
+        'url': 'https://' + websiteName,
+        'value': timeSum.toString()
+    };
+
+    chrome.cookies.set(cookie);
+    console.log('cookie has been set');
+
     //populate names with times
     console.log(websiteMap);
 
