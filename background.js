@@ -20,6 +20,11 @@ let end = 0;
 //variable used to remember previous tab when changed
 let currentPage;
 
+let date = new Date();
+date.setHours(24,0,0,0);
+let cookieExp=(date.getTime())/1000;
+
+
 function printPage() {
 
 
@@ -97,6 +102,7 @@ function truncateUrl(url) {
 
 
 function timeMapper(websiteName, elapsedTime) {
+
     let timeYet,timeSum;
     //check if new website today
     if (websiteMap.has(websiteName) === false) {
@@ -109,12 +115,16 @@ function timeMapper(websiteName, elapsedTime) {
         timeSum = timeYet + elapsedTime;
         websiteMap.set(websiteName, timeSum);
     }
+
+
     let cookie = {
         'name': 'kukik',
         'url': 'https://' + websiteName,
-        'value': timeSum.toString()
+        'value': timeSum.toString(),
+        'expirationDate':cookieExp
     };
 
+    console.log(cookie.expirationDate+'herehrere');
     chrome.cookies.set(cookie);
     console.log('cookie has been set');
 
