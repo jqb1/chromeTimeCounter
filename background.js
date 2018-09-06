@@ -40,7 +40,8 @@ function buttonClicked(tab) {
         txt: 'changeColor'
     };
 
-    printPage();
+
+
     chrome.tabs.sendMessage(tab.id, msg);
 }
 
@@ -117,22 +118,18 @@ function timeMapper(websiteName, elapsedTime) {
     }
 
 
-    let cookie = {
-        'name': 'kukik',
-        'url': 'https://' + websiteName,
-        'value': timeSum.toString(),
-        'expirationDate':cookieExp
-    };
+    chrome.storage.local.set({[websiteName]:timeSum}, function() {
+        console.log('Valu set');
 
-    console.log(cookie.expirationDate+'herehrere');
-    chrome.cookies.set(cookie);
-    console.log('cookie has been set');
+        chrome.storage.local.get([websiteName], function(result) {
+            console.log('Value currently is ' + result[websiteName] + websiteName);
+        });
+    });
+
 
     //populate names with times
     console.log(websiteMap);
 
 }
 
-function countTime() {
 
-}
