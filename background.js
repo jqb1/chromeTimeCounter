@@ -32,8 +32,10 @@ function buttonClicked(tab) {
     };
     chrome.tabs.sendMessage(tab.id, msg);
 
-    chrome.storage.local.get(['www.facebook.com'], function (result) {
-        console.log('Value currently is ' + result['www.facebook.com']);
+    let websiteName = 'www.facebook.com';
+
+    chrome.storage.local.get('expirationDate', function (result) {
+        console.log('Value currently is ' + result['expirationDate']);
     });
 
     setExpirationDate();
@@ -104,8 +106,17 @@ function timeMapper(websiteName, elapsedTime) {
     // check if new website today
     if (websiteMap.has(websiteName) === false) {
 
-        websiteMap.set(websiteName, elapsedTime);
-        timeSum = elapsedTime;
+        // if value not yet in a map, check local storage
+        chrome.storage.local.get([websiteName], function (result) {
+            console.log(result[websiteName] + ' result from local storage');
+            timeSum = elapsedTime + result[websiteName];
+            if(result[websiteName] == null) {
+                websiteMap.set(websiteName, elapsedTime)
+            }
+            else
+                websiteMap.set(websiteName,timeSum)
+        });
+
     }
     else {
         timeYet = websiteMap.get(websiteName);
@@ -118,7 +129,6 @@ function timeMapper(websiteName, elapsedTime) {
         console.log('Value set');
     });
 
-
     // populate names with times
     console.log(websiteMap);
 
@@ -129,12 +139,8 @@ function setExpirationDate() {
 
     // today, midnight
     expirationDate.setHours(24, 0, 0, 0);
+    expirationDate = expirationDate.getTime();
 
-    expirationDate=expirationDate.getTime();
-
-    chrome.storage.local.get(['expirationDate'], function (result) {
-        console.log('Expiration date is ' + result['expirationDate']);
-    });
 }
 
 // will clear storage every next day
@@ -154,29 +160,31 @@ function isNewDay() {
     if (expirationDate === 0) {
         chrome.storage.local.get(['expirationDate'], function (result) {
             expirationDate = result['expirationDate'];
-            console.log('Expiration date is ' + result['expirationDate']);
+            console.log('Expiration date is ' + expirationDate);
 
             // case of first launch of the extension
             if (result['expirationDate'] == null) {
                 setExpirationDate();
             }
+            // if new day, reset times in local storage
+            if (Date.now() > expirationDate) {
+                console.log(expirationDate+'->expiration Date');
+                clearStorage();
+
+                //clear map
+                websiteMap = new Map();
+
+                // set new expiration date
+                setExpirationDate();
+
+                // save new expiration date in local storage
+                chrome.storage.local.set({'expirationDate': expirationDate}, function () {
+                    console.log('Expiration date set NEW DAY NEWDAY');
+                });
+            }
         });
     }
-    // if new day, reset times in local storage
-    if (Date.now() > expirationDate) {
-        clearStorage();
 
-        //clear map
-        websiteMap = new Map();
-
-        // set new expiration date
-        setExpirationDate();
-
-        // save new expiration date in local storage
-        chrome.storage.local.set({'expirationDate': expirationDate}, function () {
-            console.log('Expiration date set');
-        });
-    }
 }
 
 
