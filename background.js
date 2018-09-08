@@ -130,6 +130,7 @@ function setExpirationDate() {
     // today, midnight
     expirationDate.setHours(24, 0, 0, 0);
 
+    expirationDate=expirationDate.getTime();
 
     chrome.storage.local.get(['expirationDate'], function (result) {
         console.log('Expiration date is ' + result['expirationDate']);
@@ -172,7 +173,7 @@ function isNewDay() {
         setExpirationDate();
 
         // save new expiration date in local storage
-        chrome.storage.local.set({'expirationDate': expirationDate.getTime()}, function () {
+        chrome.storage.local.set({'expirationDate': expirationDate}, function () {
             console.log('Expiration date set');
         });
     }
