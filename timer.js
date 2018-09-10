@@ -3,7 +3,7 @@ console.log('test2');
 
 chrome.runtime.onMessage.addListener(gotMessage);
 
-var isColored = false;
+let isColored = false;
 
 
 
