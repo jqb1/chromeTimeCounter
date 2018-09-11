@@ -3,7 +3,7 @@ chrome.runtime.sendMessage({data:"Handshake"},function(response){
     console.log('message sent')
 });
 chrome.runtime.onMessage.addListener(function(message,sender,sendResponse){
-    let str = JSON.stringify(message.data);
+    let str = message.data;
     console.log('received from background');
     console.log(str)
 });

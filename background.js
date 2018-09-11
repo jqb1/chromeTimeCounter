@@ -26,8 +26,6 @@ let currentPage;
 let expirationDate = 0;
 
 
-let datax = 'alela';
-
 /*
 -------------------------------------
  */
@@ -35,29 +33,25 @@ function popupMessage() {
 
     console.log('received from popup');
 
-    chrome.runtime.sendMessage({data: datax}, function (response) {
+    let websiteArray = mapToArray(websiteMap);
+    console.log(websiteArray);
+
+    chrome.runtime.sendMessage({data: websiteArray}, function (response) {
         console.log('sent from background to popup')
     });
 
 }
 
-function buttonClicked(tab) {
-    // let msg = {
-    //     txt: 'changeColor'
-    // };
-    // chrome.tabs.sendMessage(tab.id, msg);
-    //
-    // let websiteName = 'www.facebook.com';
-    //
-    // chrome.storage.local.get('expirationDate', function (result) {
-    //     console.log('Value currently is ' + result['expirationDate']);
-    // });
-    //
-    // setExpirationDate();
-    // console.log(expirationDate)
-    console.log('buttonclicked')
+function mapToArray(siteMap) {
+    let websiteArray = [];
+    for (let [key, value] of siteMap.entries()) {
+        let str = key + ' = ' + value;
+        websiteArray.push(str)
+    }
 
+    return websiteArray
 }
+
 
 function tabChanged() {
     let elapsedTime = 0;
@@ -95,7 +89,6 @@ function tabChanged() {
 
 function timeMapper(websiteName, elapsedTime) {
 
-    console.log('timemaper');
     let timeYet, timeSum;
     // check if new website today
     if (websiteMap.has(websiteName) === false) {
@@ -152,11 +145,11 @@ function isNewDay() {
             }
             // if new day, reset times in local storage
             if (Date.now() > expirationDate) {
+                // clear storage
                 clearStorage();
                 // set new expiration date
                 setExpirationDate();
-
-                // save new expiration date in local storage
+                // save new expiration date(global variable changed) in local storage
                 chrome.storage.local.set({'expirationDate': expirationDate}, function () {
                     console.log('Expiration date set NEW DAY');
                 });
@@ -191,6 +184,7 @@ function clearStorage() {
         if (error) {
             console.error(error);
         }
+
     });
 }
 
