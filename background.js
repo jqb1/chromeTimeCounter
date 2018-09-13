@@ -104,10 +104,10 @@ function timeMapper(websiteName, elapsedTime) {
 
             let minutes = (timeSum / 1000) / 60;
             if (result[websiteName] == null) {
-                websiteMap.set(websiteName, timeSum)
+                websiteMap.set(websiteName, minutes)
             }
             else
-                websiteMap.set(websiteName, timeSum)
+                websiteMap.set(websiteName, minutes)
         });
 
     }
@@ -116,7 +116,7 @@ function timeMapper(websiteName, elapsedTime) {
         timeYet = websiteMap.get(websiteName);
         timeSum = timeYet + elapsedTime;
         let minutes = (timeSum / 1000) / 60;
-        websiteMap.set(websiteName, timeSum);
+        websiteMap.set(websiteName,minutes);
     }
 
 
@@ -138,7 +138,7 @@ function isNewDay() {
         chrome.storage.local.get(['expirationDate'], function (result) {
 
             expirationDate = result['expirationDate'];
-            console.log("expirationd ate " + expirationDate);
+            console.log("expirationd date " + expirationDate);
             // case of first launch of the extension
             if (result['expirationDate'] == null) {
                 setExpirationDate();

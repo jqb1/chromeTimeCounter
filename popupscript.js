@@ -1,9 +1,22 @@
 //send message to background when popup
-chrome.runtime.sendMessage({data:"Handshake"},function(response){
+chrome.runtime.sendMessage({data: "Handshake"}, function (response) {
     console.log('message sent')
 });
-chrome.runtime.onMessage.addListener(function(message,sender,sendResponse){
-    let str = message.data;
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+    let websites = message.data;
     console.log('received from background');
-    console.log(str)
+    console.log(websites);
+
+    websites = arrayToHTML(websites);
+    document.getElementById('time').innerHTML = websites;
 });
+
+function arrayToHTML(array) {
+    let output_list = '';
+    output_list+='<ul>';
+    for (let el of array) {
+        output_list += '<li>' + el + '</li>';
+    }
+    output_list+='</ul>';
+    return output_list
+}
