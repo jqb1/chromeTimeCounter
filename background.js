@@ -104,10 +104,10 @@ function timeMapper(websiteName, elapsedTime) {
 
             let minutes = (timeSum / 1000) / 60;
             if (result[websiteName] == null) {
-                websiteMap.set(websiteName, minutes)
+                websiteMap.set(websiteName, timeSum)
             }
             else
-                websiteMap.set(websiteName, minutes)
+                websiteMap.set(websiteName, timeSum)
         });
 
     }
@@ -116,7 +116,7 @@ function timeMapper(websiteName, elapsedTime) {
         timeYet = websiteMap.get(websiteName);
         timeSum = timeYet + elapsedTime;
         let minutes = (timeSum / 1000) / 60;
-        websiteMap.set(websiteName,minutes);
+        websiteMap.set(websiteName,timeSum);
     }
 
 
@@ -178,7 +178,6 @@ function clearStorage() {
     //clear map
     websiteMap = new Map();
 
-    console.log('should be almost never');
     chrome.storage.local.clear(function () {
         let error = chrome.runtime.lastError;
         if (error) {
@@ -208,8 +207,4 @@ function truncateUrl(url) {
     }
 
     return output_word;
-}
-
-function writeToPopup() {
-
 }

@@ -14,8 +14,8 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 function arrayToHTML(array) {
     let output_list = '';
     output_list+='<ul>';
-    for (let el of array) {
-        output_list += '<li>' + el + '</li>';
+    for (let time of array) {
+        output_list += '<li>' + time + ' min'+'</li>';
     }
     output_list+='</ul>';
     return output_list

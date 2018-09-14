@@ -1,3 +1,21 @@
 body{
-    width: 500px;
+    width: 350px;
+    font: 14px/1.5 Arial, Helvatica, sans-serif;
+    display: flex;
+    padding: 0px 20px 0px 20px;
+    margin: 0;
+    background-color: white;
+}
+ul{
+    list-style: none;
+    padding:0;
+    margin:0;
+    background: white;
+}
+li{
+    padding: 3px;
+    border: 1px solid #001F3F;
+    color:#001F3F;
+    margin-bottom: .5rem
+
 }
