@@ -44,14 +44,18 @@ function popupMessage() {
 
 function mapToArray(siteMap) {
     let websiteArray = [];
-    for (let [key, value] of siteMap.entries()) {
-        let str = key + ' = ' + value;
+    for (let [webpage, time] of siteMap.entries()) {
+        time=millisecToMin(time);
+        let str = webpage + ' = ' + time;
         websiteArray.push(str)
     }
 
     return websiteArray
 }
-
+function millisecToMin(time) {
+    let minutes = Math.floor((time / 1000) / 60);
+    return minutes;
+}
 
 function tabChanged() {
     let elapsedTime = 0;
@@ -102,7 +106,6 @@ function timeMapper(websiteName, elapsedTime) {
             else
                 timeSum = elapsedTime;
 
-            let minutes = (timeSum / 1000) / 60;
             if (result[websiteName] == null) {
                 websiteMap.set(websiteName, timeSum)
             }
@@ -115,7 +118,7 @@ function timeMapper(websiteName, elapsedTime) {
 
         timeYet = websiteMap.get(websiteName);
         timeSum = timeYet + elapsedTime;
-        let minutes = (timeSum / 1000) / 60;
+
         websiteMap.set(websiteName,timeSum);
     }
 

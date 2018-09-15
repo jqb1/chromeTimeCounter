@@ -1,21 +1,27 @@
 body{
     width: 350px;
-    font: 14px/1.5 Arial, Helvatica, sans-serif;
+    font-size: 13px;
     display: flex;
-    padding: 0px 20px 0px 20px;
     margin: 0;
     background-color: white;
+
+}
+#time{
+    width: 90%;
+    margin: auto;
 }
 ul{
     list-style: none;
     padding:0;
     margin:0;
     background: white;
+    width: 100%;
 }
 li{
     padding: 3px;
     border: 1px solid #001F3F;
     color:#001F3F;
-    margin-bottom: .5rem
+    margin-bottom: .5rem;
+    text-align: center;
 
 }
