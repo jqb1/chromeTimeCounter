@@ -45,13 +45,14 @@ function popupMessage() {
 function mapToArray(siteMap) {
     let websiteArray = [];
     for (let [webpage, time] of siteMap.entries()) {
-        time=millisecToMin(time);
+        time = millisecToMin(time);
         let str = webpage + ' = ' + time;
         websiteArray.push(str)
     }
 
     return websiteArray
 }
+
 function millisecToMin(time) {
     let minutes = Math.floor((time / 1000) / 60);
     return minutes;
@@ -78,16 +79,24 @@ function tabChanged() {
         let pageName = truncateUrl(url);
 
         //if first page
-        if (!currentPage)
+        if (!currentPage) {
             currentPage = pageName;
-
-        // map previous website name with time spent
+            saveMapOnInit();
+        }
+        // map website name with time spent (tab before change)
         timeMapper(currentPage, elapsedTime);
         // remember current page name
         currentPage = pageName;
 
     });
 
+}
+function saveMapOnInit() {
+    // set to null to save everything from local storage
+    chrome.storage.local.get(null, function(items) {
+        websiteMap = new Map(Object.entries(items));
+        return websiteMap;
+    });
 }
 
 
@@ -119,7 +128,7 @@ function timeMapper(websiteName, elapsedTime) {
         timeYet = websiteMap.get(websiteName);
         timeSum = timeYet + elapsedTime;
 
-        websiteMap.set(websiteName,timeSum);
+        websiteMap.set(websiteName, timeSum);
     }
 
 
