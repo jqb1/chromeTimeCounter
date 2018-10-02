@@ -45,7 +45,10 @@ function popupMessage() {
 function mapToArray(siteMap) {
     let websiteArray = [];
     for (let [webpage, time] of siteMap.entries()) {
-        time = millisecToMin(time);
+        if(webpage==='expirationDate'){
+	    continue;
+	}
+	time = millisecToMin(time);
         let str = webpage + ' = ' + time;
         websiteArray.push(str)
     }
@@ -92,7 +95,7 @@ function tabChanged() {
 
 }
 function saveMapOnInit() {
-    // set to null to save everything from local storage
+    // save everything from local storage
     chrome.storage.local.get(null, function(items) {
         websiteMap = new Map(Object.entries(items));
         return websiteMap;
@@ -149,26 +152,22 @@ function isNewDay() {
     if (expirationDate === 0 || Date.now() > expirationDate) {
         chrome.storage.local.get(['expirationDate'], function (result) {
 
-            expirationDate = result['expirationDate'];
-            console.log("expirationd date " + expirationDate);
+            let expiration = result['expirationDate'];
+            console.log("expirationd date " + expiration);
             // case of first launch of the extension
-            if (result['expirationDate'] == null) {
+            if (expiration == null) {
                 setExpirationDate();
             }
             // if new day, reset times in local storage
-            if (Date.now() > expirationDate) {
+            if (Date.now() > expiration) {
                 // clear storage
                 clearStorage();
                 // set new expiration date
                 setExpirationDate();
-                // save new expiration date(global variable changed) in local storage
-                chrome.storage.local.set({'expirationDate': expirationDate}, function () {
-                    console.log('Expiration date set NEW DAY');
-                });
-            }
-        });
-    }
+	    }
+   	 });
 
+    }
 }
 
 
