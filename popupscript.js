@@ -15,7 +15,7 @@ function arrayToHTML(array) {
     let output_list = '';
     output_list+='<ul>';
     for (let time of array) {
-        output_list += '<li>' + time + ' min'+'</li>';
+        output_list += '<li>' + time[0]+' = '+ time[1] + ' min'+'</li>';
     }
     output_list+='</ul>';
     return output_list

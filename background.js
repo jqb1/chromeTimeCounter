@@ -36,6 +36,7 @@ function popupMessage() {
     let websiteArray = mapToArray(websiteMap);
     console.log(websiteArray);
 
+
     chrome.runtime.sendMessage({data: websiteArray}, function (response) {
         console.log('sent from background to popup')
     });
@@ -49,11 +50,18 @@ function mapToArray(siteMap) {
 	    continue;
 	}
 	time = millisecToMin(time);
-        let str = webpage + ' = ' + time;
-        websiteArray.push(str)
+	let page = [webpage,time];
+        
+	websiteArray.push(page);
     }
+    //sorting output array by time
+    //if subtraction result is negative sorting function will place first value before the second etc
+    websiteArray=websiteArray.sort(function (a,b){
+        return a[1] - b[1];
+    });
 
-    return websiteArray
+
+    return websiteArray.reverse();
 }
 
 function millisecToMin(time) {
