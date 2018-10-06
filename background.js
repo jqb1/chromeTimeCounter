@@ -31,7 +31,6 @@ let expirationDate = 0;
  */
 function popupMessage() {
 
-    console.log('received from popup');
 
     let websiteArray = mapToArray(websiteMap);
     console.log(websiteArray);
@@ -120,17 +119,13 @@ function timeMapper(websiteName, elapsedTime) {
         // if value not yet in a map, check local storage
         chrome.storage.local.get([websiteName], function (result) {
 
-            //when new day result[websiteName] will be undefined and map will be cleared
+            //when new day result[websiteName] will be undefined and map will be clean
             if (result[websiteName])
                 timeSum = elapsedTime + result[websiteName];
             else
                 timeSum = elapsedTime;
 
-            if (result[websiteName] == null) {
-                websiteMap.set(websiteName, timeSum)
-            }
-            else
-                websiteMap.set(websiteName, timeSum)
+             websiteMap.set(websiteName, timeSum)
         });
 
     }
@@ -142,7 +137,7 @@ function timeMapper(websiteName, elapsedTime) {
         websiteMap.set(websiteName, timeSum);
     }
 
-
+    // saving in local storage
     chrome.storage.local.set({[websiteName]: timeSum}, function () {
 
         console.log('Value in local storage overwritten');
@@ -150,26 +145,23 @@ function timeMapper(websiteName, elapsedTime) {
 
     });
 
-    // populate names with times
 
 }
 
 function isNewDay() {
     // expiration date will be equal 0 everytime when script will restart
-    // so get date from local storage
+    // so get the date from local storage
     if (expirationDate === 0 || Date.now() > expirationDate) {
         chrome.storage.local.get(['expirationDate'], function (result) {
 
             let expiration = result['expirationDate'];
             console.log("expirationd date " + expiration);
-            // case of first launch of the extension
-            if (expiration == null) {
-                setExpirationDate();
-            }
+            
             // if new day, reset times in local storage
             if (Date.now() > expiration) {
                 // clear storage
                 clearStorage();
+		console.log('local storage cleared!');    
                 // set new expiration date
                 setExpirationDate();
 	    }
