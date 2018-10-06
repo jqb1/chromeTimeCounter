@@ -1,10 +1,13 @@
 console.log("backgroud  running!");
 
-//chrome.browserAction.onClicked.addListener(buttonClicked);
 chrome.tabs.onActiveChanged.addListener(tabChanged);
 
 //handling handshake and responding with data
 chrome.runtime.onMessage.addListener(popupMessage);
+
+chrome.tabs.onUpdated.addListener(urlChanged);
+
+
 
 let params = {
     'active': true,
@@ -66,6 +69,11 @@ function mapToArray(siteMap) {
 function millisecToMin(time) {
     let minutes = Math.floor((time / 1000) / 60);
     return minutes;
+}
+//handle url change
+function urlChanged(tabId,changeInfo,tab){
+    if(changeInfo.url)
+	tabChanged();
 }
 
 function tabChanged() {
