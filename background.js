@@ -32,6 +32,8 @@ let expirationDate = 0;
 /*
 -------------------------------------
  */
+
+/*---------Popup ----------*/
 function popupMessage() {
 
 
@@ -70,6 +72,9 @@ function millisecToMin(time) {
     let minutes = Math.floor((time / 1000) / 60);
     return minutes;
 }
+
+/*-------------------------*/
+
 //handle url change
 function urlChanged(tabId,changeInfo,tab){
     if(changeInfo.url)
@@ -113,7 +118,6 @@ function saveMapOnInit() {
     // save everything from local storage
     chrome.storage.local.get(null, function(items) {
         websiteMap = new Map(Object.entries(items));
-        return websiteMap;
     });
 }
 
