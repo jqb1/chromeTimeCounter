@@ -168,7 +168,9 @@ function isNewDay() {
 
             let expiration = result['expirationDate'];
             console.log("expirationd date " + expiration);
-            
+            if(!expiration)
+		setExpirationDate();
+
             // if new day, reset times in local storage
             if (Date.now() > expiration) {
                 // clear storage
