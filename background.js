@@ -1,5 +1,6 @@
 console.log("backgroud  running!");
 
+
 chrome.tabs.onActiveChanged.addListener(tabChanged);
 
 //handling handshake and responding with data
@@ -29,6 +30,9 @@ let currentPage;
 let expirationDate = 0;
 
 
+//when opening a browser check if new day
+isNewDay();
+
 /*
 -------------------------------------
  */
@@ -37,8 +41,7 @@ let expirationDate = 0;
 function popupMessage() {
 
 
-    let websiteArray = mapToArray(websiteMap);
-    console.log(websiteArray);
+    let websiteArray = mapToArray(websiteMap); console.log(websiteArray);
 
 
     chrome.runtime.sendMessage({data: websiteArray}, function (response) {
@@ -175,7 +178,7 @@ function isNewDay() {
             if (Date.now() > expiration) {
                 // clear storage
                 clearStorage();
-		console.log('local storage cleared!');    
+	   
                 // set new expiration date
                 setExpirationDate();
 	    }
@@ -205,7 +208,8 @@ function clearStorage() {
 
     chrome.storage.local.clear(function () {
         let error = chrome.runtime.lastError;
-        if (error) {
+       	console.log('Local storage cleared') 		
+	if (error) {
             console.error(error);
         }
 
